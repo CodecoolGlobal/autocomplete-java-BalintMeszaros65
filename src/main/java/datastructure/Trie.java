@@ -1,6 +1,8 @@
 package datastructure;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Trie {
 
@@ -46,10 +48,31 @@ public class Trie {
         }
     }
 
+    private TrieNode getChildIfExists(char character, TrieNode trieNode) {
+        Optional<TrieNode> optionalTrieNode = trieNode.getChildByCharacter(character);
+        if (optionalTrieNode.isPresent()) {
+            return optionalTrieNode.get();
+        } else {
+            throw new NoSuchElementException();
+        }
+    }
+
     public boolean remove(String word) {
-        //optional
-        // TODO
-        return false;
+        AtomicReference<TrieNode> tempNode = new AtomicReference<>(root);
+        try {
+            word.chars()
+                    .mapToObj(character -> (char) character)
+                    .forEach(character -> tempNode.set(getChildIfExists(character, tempNode.get())));
+        } catch (NoSuchElementException ignore) {
+            return false;
+        }
+        TrieNode trieNode = tempNode.get();
+        if (trieNode.isTerminating()) {
+            trieNode.setTerminating(false);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
