@@ -34,4 +34,11 @@ public class AutoCompleteTest {
         this.autocomplete.trie.insert("Autocomplete");
         assertTrue(this.autocomplete.getMatches("auto").isEmpty());
     }
+
+    @Test
+    public void testAfterOneInsertAndOneDelete_GetMatchesCantFindAutocomplete(){
+        this.autocomplete.trie.insert("autocomplete");
+        this.autocomplete.trie.remove("autocomplete");
+        assertTrue(this.autocomplete.getMatches("autocomplete").isEmpty());
+    }
 }
