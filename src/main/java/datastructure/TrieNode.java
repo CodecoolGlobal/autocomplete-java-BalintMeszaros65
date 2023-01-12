@@ -17,12 +17,24 @@ public class TrieNode {
         this.children = new ArrayList<>();
     }
 
+    public List<TrieNode> getChildren() {
+        return children;
+    }
+
+    public char getValue() {
+        return value;
+    }
+
     public void setChild(TrieNode trieNode) {
        this.children.add(trieNode);
     }
 
     public Optional<TrieNode> getChildByCharacter(char value) {
         return this.children.stream().filter(node -> node.value == value).findFirst();
+    }
+
+    public boolean isTerminating() {
+        return isTerminating;
     }
 
     public void setTerminating(boolean terminating) {
